@@ -6,6 +6,11 @@ Technologies utilisées :
 Node-JS
 Express 4.16
 Mongo-db
+Mongoose
+Mongoose-unique-validator
+Bcrypt
+Jsonwebtoken
+Multer
 
 Lancer le front-end (répertoir front-end)
 npm start (lance NG Start)
