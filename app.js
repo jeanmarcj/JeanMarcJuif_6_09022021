@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const sauceRoutes = require('./routes/sauce.js');
+const userRoutes = require('./routes/user.js');
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +41,7 @@ mongoose.connect('mongodb+srv://sopekockoUser:ormesson94490@cluster0.bneic.mongo
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/sauces', sauceRoutes);
+app.use('api/auth', userRoutes);
   
 
   module.exports = app;
