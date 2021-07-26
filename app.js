@@ -11,6 +11,14 @@ app.use(express.json());
 /**
  * Mongo DB connection
  */
+mongoose.connect('mongodb+srv://sopekockoUser:ormesson94490@cluster0.bneic.mongodb.net/sopekockoDB?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+)
+.then(() => console.log('Connexion à MongoDB Atlas réussie !'))
+.catch(() => console.log('Connexion à MongoDB échouée !'));
 
 /**
  * CROS Security middleware
