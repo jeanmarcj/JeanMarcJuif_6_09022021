@@ -11,6 +11,8 @@ Mongoose-unique-validator
 Bcrypt
 Jsonwebtoken
 Multer
+cors
+
 
 Lancer le front-end (répertoir front-end)
 npm start (lance NG Start)
