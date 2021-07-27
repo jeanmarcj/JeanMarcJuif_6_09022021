@@ -1,4 +1,4 @@
-// const Sauce = require('../models/Sauce');
+const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 /**
@@ -8,13 +8,16 @@ const fs = require('fs');
  * @param {*} next 
  */
 exports.createSauce = (req, res, next) => {
-    const sauceObject = req.file ?
-        {
-            ...JSON.parse(req.body.sauce)
-        } : { ...req.body };
-    // const sauceObject = JSON.parse(req.body.sauce);
-    res.status(201).json({ message : 'Sauce enregistrée !'});
-    console.log('Sauce à enregistrer : ', sauceObject);
+    const sauceObject = JSON.parse(req.body.sauce);
+    delete sauceObject._id;
+    const sauce = new Sauce({
+        ...sauceObject,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    });
+    console.log(sauce);
+    sauce.save()
+    .then(() => res.status(201).json({ message : 'Sauce enregistrée !'}))
+    .catch(error => res.status(400).json({error}));
 };
 
 /**
@@ -68,6 +71,6 @@ exports.getOneSauce = (req, res, next) => {
 exports.getAllSauces = (req, res, next) => {
     res.status(200);
     console.log('Route "/" reçue !');
-    // res.json({ message: 'Votre requête est bien reçue'});
-    res.send('<h1>Récupérer toutes les sauces, en travaux</h1>');
+    res.json({ message: 'Votre requête est bien reçue'});
+    // res.send('<h1>Récupérer toutes les sauces, en travaux</h1>');
 };
