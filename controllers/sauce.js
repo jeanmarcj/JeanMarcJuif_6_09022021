@@ -21,6 +21,56 @@ exports.createSauce = (req, res, next) => {
 };
 
 /**
+ * Manage the like or Dislike for a sauce id
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.likeSauce = (req, res, next) => {
+    const vote = req.body.like;
+    switch (vote) {
+        // The user like. We add his id to the array and add 1 to likes
+        case 1 :
+            Sauce.updateOne({_id: req.params.id}, {$inc: {likes: +1}, $push : { usersLiked : req.body.userId}
+            })
+            .then(() => res.status(201).json({message : 'Like ajouté !'}))
+            .catch(error => res.status(500).json({ error }))
+        break;
+        
+        // The user dislike. We add his id to the array on we add 1 to dislikes
+        case -1 :
+            Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: +1}, $push: { userDisliked: req.body.userId}})
+            .then(() => res.status(201).json({message: 'Dislike ajouté !'}))
+            .catch(error => res.status(500).json({ error }))
+        break;
+
+        // The user cancel his choice : we delete this user from the array and put -1 to likes or dislikes
+        case 0 :
+            Sauce.findOne({_id: req.params})
+            .then(sauce => {
+                if (sauce.usersLiked.includes(req.body.userId)) {
+                    Sauce.updateOne({_id: req.params.id}, { $pull: { userLiked: req.body.userId}, $inc: {likes: -1}})
+                    .then(() => res.status(201).json({message : 'Like has been canceled !'}))
+                    .catch(error => res.status(500).json({error}))
+                } else {
+                    Sauce.updateOne({_id: req.params.id}, {
+                        $pull: { userDisliked: req.body.userId}, $inc: {dislikes: -1}
+                    })
+                    .then(() => res.status(201).json({message: 'Dislike cancelled !'}))
+                    .catch(error => res.status(500).json({error}))
+                }
+            })
+            .catch(error => res.status(500).json({error}))
+        break;
+
+        default :
+            console.log(req.body);
+    }
+    // console.log('Vote enregistré traité !');
+    // res.status(200).json({ message: 'Votre vote est enregistré !'});
+};
+
+/**
  * Update a sauce
  * @param {*} req 
  * @param {*} res 
