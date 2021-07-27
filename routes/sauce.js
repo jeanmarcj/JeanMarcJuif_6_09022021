@@ -9,28 +9,34 @@ const multer = require('../middleware/multer-config');
 /**
  * Create a sauce
  */
-router.post('/', multer, sauceCtrl.createSauce);
+router.post('/', auth, multer, sauceCtrl.createSauce);
+
+/**
+ * Create a like
+ */
+router.post('/:id/like', auth, sauceCtrl.likeSauce);
+
 
 /**
  * Update a sauce
  */
-router.put('/:id', multer, sauceCtrl.modifySauce);
+router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 
 
 /**
  * Delete one sauce with an id
  */
-router.delete('/:id', sauceCtrl.deleteSauce);
+router.delete('/:id', auth, sauceCtrl.deleteSauce);
 
 
 /**
  * Fecth one sauce with id
  */
-router.get('/:id', sauceCtrl.getOneSauce);
+router.get('/:id', auth, sauceCtrl.getOneSauce);
 
 /**
  * Fetch all sauces
  */
-router.get('/', sauceCtrl.getAllSauces);
+router.get('/', auth, sauceCtrl.getAllSauces);
 
 module.exports = router;
