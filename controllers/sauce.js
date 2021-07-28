@@ -29,7 +29,7 @@ exports.createSauce = (req, res, next) => {
 exports.likeSauce = (req, res, next) => {
     const vote = req.body.like;
     switch (vote) {
-        // The user like. We add his id to the array and add 1 to likes
+        // The user like. The user id is add to the array and +1 is set to likes variable
         case 1 :
             Sauce.updateOne({_id: req.params.id}, {$inc: {likes: +1}, $push : { usersLiked : req.body.userId}
             })
@@ -37,14 +37,14 @@ exports.likeSauce = (req, res, next) => {
             .catch(error => res.status(500).json({ error }))
         break;
         
-        // The user dislike. We add his id to the array on we add 1 to dislikes
+        // The user dislike. The user id is add to the array and dislikes is set with +1
         case -1 :
             Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: +1}, $push: { usersDisliked: req.body.userId}})
             .then(() => res.status(201).json({message: 'Dislike ajouté !'}))
             .catch(error => res.status(500).json({ error }))
         break;
 
-        // The user cancel his choice : we delete this user from the array and put -1 to likes or dislikes
+        // The user cancel his choice : the user id is deleted from the array and set -1 to likes or dislikes
         case 0 :
             Sauce.findOne({_id: req.params})
             .then(sauce => {
@@ -66,8 +66,6 @@ exports.likeSauce = (req, res, next) => {
         default :
             console.log(req.body);
     }
-    // console.log('Vote enregistré traité !');
-    // res.status(200).json({ message: 'Votre vote est enregistré !'});
 };
 
 /**
