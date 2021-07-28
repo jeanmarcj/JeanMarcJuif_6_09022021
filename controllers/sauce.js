@@ -39,7 +39,7 @@ exports.likeSauce = (req, res, next) => {
         
         // The user dislike. We add his id to the array on we add 1 to dislikes
         case -1 :
-            Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: +1}, $push: { userDisliked: req.body.userId}})
+            Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: +1}, $push: { usersDisliked: req.body.userId}})
             .then(() => res.status(201).json({message: 'Dislike ajouté !'}))
             .catch(error => res.status(500).json({ error }))
         break;
@@ -49,12 +49,12 @@ exports.likeSauce = (req, res, next) => {
             Sauce.findOne({_id: req.params})
             .then(sauce => {
                 if (sauce.usersLiked.includes(req.body.userId)) {
-                    Sauce.updateOne({_id: req.params.id}, { $pull: { userLiked: req.body.userId}, $inc: {likes: -1}})
+                    Sauce.updateOne({_id: req.params.id}, { $pull: { usersLiked: req.body.userId}, $inc: {likes: -1}})
                     .then(() => res.status(201).json({message : 'Like has been canceled !'}))
                     .catch(error => res.status(500).json({error}))
                 } else {
                     Sauce.updateOne({_id: req.params.id}, {
-                        $pull: { userDisliked: req.body.userId}, $inc: {dislikes: -1}
+                        $pull: { usersDisliked: req.body.userId}, $inc: {dislikes: -1}
                     })
                     .then(() => res.status(201).json({message: 'Dislike cancelled !'}))
                     .catch(error => res.status(500).json({error}))
