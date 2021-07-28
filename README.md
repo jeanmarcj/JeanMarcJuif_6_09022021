@@ -1,8 +1,8 @@
-Projet OpenclassRooms So Pekocko
+### Projet OpenclassRooms So Pekocko
 
 A partir d'un front end fourni, coder une API back-end en fonction du cahier des charges fourni. 
 
-Technologies utilisées :
+### Technologies utilisées :
 Node-JS
 Express 4.16
 Mongo-db : moteur de base de donnée
@@ -14,14 +14,14 @@ Multer : To download images
 cors : Allow other ip (outside origin)
 
 
-*** Lancer le front-end (répertoir front-end)
+### Lancer le front-end (répertoir front-end)
 npm start (lance NG Start)
 
-*** Lancer le serveur back-end (Par défaut écoute le port: 3000) :
+### Lancer le serveur back-end (Par défaut écoute le port: 3000) :
 nodemon server
 
 
-TODO:
+# TODO:
  
 password-validator : restrictions sur le mot de passe
 xss : attaques xss
