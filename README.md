@@ -5,13 +5,14 @@ A partir d'un front end fourni, coder une API back-end en fonction du cahier des
 ## Technologies utilisées :
 Node-JS (nodemon)
 Express 4.16
-Mongo-db : moteur de base de donnée
+Mongo-db : data base
 Mongoose : 
 Mongoose-unique-validator : Secure to have only one user email adress in the BDD
 Bcrypt : To hash the user password in the BDD
 Jsonwebtoken : For token authentification
 Multer : To download images
 Cors : Allow other ip (outside origin)
+
 Security
 --------
 Helmet package : Helmet helps you secure your Express apps by setting various HTTP headers.
