@@ -1,6 +1,10 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
+// Protection against XSS injections
+const xss = require('xss');
+
+
 /**
  * Save a sauce
  * @param {*} req 
@@ -11,7 +15,15 @@ exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     const sauce = new Sauce({
-        ...sauceObject,
+        // ...sauceObject,
+        userId : xss(sauceObject.userId),
+        name : xss(sauceObject.name),
+        manufacturer : xss(sauceObject.manufacturer),
+        description : xss(sauceObject.description),
+        mainPepper : xss(sauceObject.mainPepper),
+        heat : xss(sauceObject.heat),
+        usersLiked : [],
+        usersDislikes : [],
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     // console.log(sauce);
@@ -78,7 +90,19 @@ exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
         { ...JSON.parse(req.body.sauce), imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { ...req.body };
-    Sauce.updateOne({ _id: req.params.id}, {...sauceObject, _id: req.params.id})
+    Sauce.updateOne(
+        { _id: req.params.id },
+        {
+            //...sauceObject,
+            name: xss(sauceObject.name),
+            manufacturer: xss(sauceObject.manufacturer),
+            description: xss(sauceObject.description),
+            mainPepper: xss(sauceObject.mainPepper),
+            heat: xss(sauceObject.heat),
+            userId: sauceObject.userId,
+            _id: req.params.id
+        }
+        )
     .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
     .catch(error => res.status(400).json({error}));
     // console.log(sauceObject);
