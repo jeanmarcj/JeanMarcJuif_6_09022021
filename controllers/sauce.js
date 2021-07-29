@@ -26,7 +26,6 @@ exports.createSauce = (req, res, next) => {
         usersDislikes : [],
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    // console.log(sauce);
     sauce.save()
     .then(() => res.status(201).json({ message : 'Sauce enregistrée !'}))
     .catch(error => res.status(400).json({error}));
@@ -105,9 +104,6 @@ exports.modifySauce = (req, res, next) => {
         )
     .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
     .catch(error => res.status(400).json({error}));
-    // console.log(sauceObject);
-    // console.log('Sauce modifiée, id: ', req.params.id);
-    // res.status(200).json({ message: 'Sauce modifiée !'});
 }
 
 /**
@@ -127,10 +123,6 @@ exports.deleteSauce = (req, res, next) => {
         });
     })
     .catch(error => res.status(500).json({ error }));
-    // res.status(200).json({ message: 'Objet supprimé !'});
-    // let sauceId = req.params.id;
-    // console.log('Route delete. Sauce ID: ' + sauceId);
-    // res.send(`<h1>Sauce supprimée</h1>`);
 }
 
 /**
@@ -143,10 +135,6 @@ exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(404).json({ error }));
-    // res.status(200);
-    // let sauceId = req.params.id;
-    // console.log('Route get one sauce "/id" reçue ! ' + sauceId);
-    // res.send(`<h1>Récupérer la sauce id ${sauceId}, en travaux</h1>`);
 };
 
 /**
@@ -160,7 +148,4 @@ exports.getAllSauces = (req, res, next) => {
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
     res.status(200);
-    // console.log('Route "/" reçue !');
-    // res.json({ message: 'Votre requête est bien reçue'});
-    // res.send('<h1>Récupérer toutes les sauces, en travaux</h1>');
 };
