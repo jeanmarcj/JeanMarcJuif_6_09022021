@@ -6,6 +6,7 @@ const cors = require('cors');
 // Security
 const helmet = require('helmet');
 const cookieSession = require('cookie-session');
+const rateLimit = require('express-rate-limit');
 
 // Routing
 const sauceRoutes = require('./routes/sauce.js');
@@ -13,6 +14,15 @@ const userRoutes = require('./routes/user.js');
 
 // Init app
 const app = express();
+
+// Middleware rate-limit.
+// For API server, rate-limiter applied to all requests.
+const limiter = rateLimit({
+  windowsMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
