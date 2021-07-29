@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 
@@ -14,6 +15,15 @@ const userRoutes = require('./routes/user.js');
 
 // Init app
 const app = express();
+
+// Set-Up the db connect string via .env file
+// The .env file is not publish on gitHub
+const testEnvFile = dotenv;
+if (testEnvFile.error) {
+  throw new Error('.env file is missing in this project !');
+}
+const DB_CONNECT_STRING = process.env.DB_URL;
+
 
 // Middleware rate-limit.
 // For API server, rate-limiter applied to all requests.
@@ -33,14 +43,14 @@ app.use(helmet());
 /**
  * Mongo DB connection
  */
-mongoose.connect('mongodb+srv://sopekockoUser:ormesson94490@cluster0.bneic.mongodb.net/sopekockoDB?retryWrites=true&w=majority',
+mongoose.connect(DB_CONNECT_STRING,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
   }
 )
-.then(() => console.log('Connexion à MongoDB Atlas réussie !'))
-.catch(() => console.log('La Connexion à MongoDB Atlas a échouée !'));
+.then(() => console.log('Connected to you DB via MongoDB Atlas !'))
+.catch(() => console.log('The connection to DB via MongoDB Atlas failed !'));
 
 /**
  * CROS Security middleware
