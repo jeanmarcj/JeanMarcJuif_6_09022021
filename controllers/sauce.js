@@ -99,7 +99,8 @@ exports.modifySauce = (req, res, next) => {
             mainPepper: xss(sauceObject.mainPepper),
             heat: xss(sauceObject.heat),
             userId: sauceObject.userId,
-            _id: req.params.id
+            _id: req.params.id,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         }
         )
     .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
