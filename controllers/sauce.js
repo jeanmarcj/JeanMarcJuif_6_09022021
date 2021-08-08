@@ -57,7 +57,7 @@ exports.likeSauce = (req, res, next) => {
 
         // The user cancel his choice : the user id is deleted from the array and set -1 to likes or dislikes
         case 0 :
-            Sauce.findOne({_id: req.params})
+            Sauce.findOne({_id: req.params.id})
             .then(sauce => {
                 if (sauce.usersLiked.includes(req.body.userId)) {
                     Sauce.updateOne({_id: req.params.id}, { $pull: { usersLiked: req.body.userId}, $inc: {likes: -1}})
