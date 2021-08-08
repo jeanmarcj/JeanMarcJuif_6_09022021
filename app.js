@@ -49,7 +49,7 @@ mongoose.connect(DB_CONNECT_STRING,
     useUnifiedTopology: true
   }
 )
-.then(() => console.log('Connected to you DB via MongoDB Atlas !'))
+.then(() => console.log('Connected to your DB via MongoDB Atlas !'))
 .catch(() => console.log('The connection to DB via MongoDB Atlas failed !'));
 
 /**
