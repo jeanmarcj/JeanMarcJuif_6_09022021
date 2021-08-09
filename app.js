@@ -24,7 +24,6 @@ if (testEnvFile.error) {
 }
 const DB_CONNECT_STRING = process.env.DB_URL;
 
-
 // Middleware rate-limit.
 // For API server, rate-limiter applied to all requests.
 const limiter = rateLimit({
@@ -46,7 +45,8 @@ app.use(helmet());
 mongoose.connect(DB_CONNECT_STRING,
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   }
 )
 .then(() => console.log('Connected to your DB via MongoDB Atlas !'))
