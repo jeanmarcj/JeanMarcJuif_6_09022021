@@ -4,6 +4,8 @@ const fs = require('fs');
 // Protection against XSS injections
 const xss = require('xss');
 
+// Prevent SQL injections with a filter
+const sanitize = require('../middleware/sanitize');
 
 /**
  * Save a sauce
@@ -89,18 +91,20 @@ exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
         { ...JSON.parse(req.body.sauce), imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { ...req.body };
+    const sanitizedId = sanitize(req.params.id);
     Sauce.updateOne(
-        { _id: req.params.id },
+        { _id: sanitizedId },
         {
-            //...sauceObject,
-            name: xss(sauceObject.name),
-            manufacturer: xss(sauceObject.manufacturer),
-            description: xss(sauceObject.description),
-            mainPepper: xss(sauceObject.mainPepper),
-            heat: xss(sauceObject.heat),
-            userId: sauceObject.userId,
-            _id: req.params.id,
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            ...sauceObject,
+            _id: sanitizedId
+            // name: xss(sauceObject.name),
+            // manufacturer: xss(sauceObject.manufacturer),
+            // description: xss(sauceObject.description),
+            // mainPepper: xss(sauceObject.mainPepper),
+            // heat: xss(sauceObject.heat),
+            // userId: sauceObject.userId,
+            // _id: req.params.id,
+            // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         }
         )
     .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
@@ -114,11 +118,12 @@ exports.modifySauce = (req, res, next) => {
  * @param {*} next  the next middleware function to execute
  */
 exports.deleteSauce = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id })
+    const sanitizedId = sanitize(req.params.id);
+    Sauce.findOne({ _id: sanitizedId })
     .then(sauce => {
         const filename = sauce.imageUrl.split('/images/'[1]);
         fs.unlink(`images/${filename}`, () => {
-            Sauce.deleteOne({_id: req.params.id})
+            Sauce.deleteOne({_id: sanitizedId})
             .then(() => res.status(200).json({message: 'Sauce supprimée !'}))
             .catch(error => res.status(400).json({ error }));
         });
@@ -133,7 +138,8 @@ exports.deleteSauce = (req, res, next) => {
  * @param {*} next  the next middleware function to execute
  */
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({_id: req.params.id})
+    const sanitizedId = sanitize(req.params.id);
+    Sauce.findOne({_id: sanitizedId})
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(404).json({ error }));
 };
