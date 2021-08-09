@@ -1,9 +1,12 @@
 const User = require('../models/User');
+// Hash password in Data Base
 const bcrypt = require('bcrypt');
+// Token Authentification
 const jwt = require('jsonwebtoken');
-
-// Mask the user email adress inside the database
+// Mask the user email adress in the Data Base
 const MaskData = require('maskdata');
+// Prevent SQL injections with a filter
+const sanitize = require('../middleware/sanitize');
 
 /**
  * User sign up
@@ -26,12 +29,14 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    User.findOne({ email: MaskData.maskEmail2(req.body.email) })
+    const sanitized = sanitize(req.body.email);
+    User.findOne({ email: MaskData.maskEmail2(sanitized) })
     .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'User not found !'});
         }
-        bcrypt.compare(req.body.password, user.password)
+        const sanitizedPassWord = sanitize(req.body.password);
+        bcrypt.compare(sanitizedPassWord, user.password)
             .then(valid => {
                 if (!valid) {
                     return res.status(401).json({ error: 'Wrong password !'});
