@@ -15,14 +15,15 @@ Cors : Allow other ip (outside origin)
 
 Security
 --------
-Helmet package : Helmet helps you secure your Express apps by setting various HTTP headers.
-CookieSession package : for HTTP session only
+Helmet package : Helmet helps you secure your Express apps by setting various HTTP headers
+CookieSession package : To prevent HTTP session only
 Express-rate-limit package : limit each IP to 100 requests max per windowMs
 Dotenv npm package : loads environment variables from a .env file into process.env
 Xss npm package : filter user input in form to prevent XSS attacks
 Maskdata npm package : mask the user email inside the data base
+mongo-sanitize : a standalone module that sanitizes inputs against query selector injection attacks. This middleware come from the module. Prevent sql injections
 
-## Lancer le front-end (répertoir front-end)
+## Lancer le front-end (répertoire front-end)
 npm start (lance NG Start)
 
 ## Lancer le serveur back-end (Par défaut écoute le port: 3000) :
@@ -33,4 +34,6 @@ Option :
 password-validator npm package
 ------------------------------
 Obligé l'utilisateur à saisir un mot de pass fort (restrictions)
-password-validator : restrictions sur le mot de passe
+
+'use strict';
+
