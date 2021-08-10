@@ -88,9 +88,30 @@ exports.likeSauce = (req, res, next) => {
  * @param {*} next 
  */
 exports.modifySauce = (req, res, next) => {
+    // If new image, we delete the old one in the 
+    if (req.file) {
+        //Find old image URL to delete the old image
+        Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+            const filename = sauce.imageUrl.split('/images/')[1];
+            console.log(filename);
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            });
+        })
+    }
+
     const sauceObject = req.file ?
-        { ...JSON.parse(req.body.sauce), imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...req.body };
+        {
+            ...JSON.parse(req.body.sauce),
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }
+        :
+        { ...req.body };
+
     const sanitizedId = sanitize(req.params.id);
     Sauce.updateOne(
         { _id: sanitizedId },
@@ -121,7 +142,7 @@ exports.deleteSauce = (req, res, next) => {
     const sanitizedId = sanitize(req.params.id);
     Sauce.findOne({ _id: sanitizedId })
     .then(sauce => {
-        const filename = sauce.imageUrl.split('/images/'[1]);
+        const filename = sauce.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
             Sauce.deleteOne({_id: sanitizedId})
             .then(() => res.status(200).json({message: 'Sauce supprimée !'}))
