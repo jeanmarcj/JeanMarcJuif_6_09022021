@@ -1,8 +1,10 @@
 # Projet OpenclassRooms So Pekocko
 
-A partir d'un front end fourni, coder une API back-end en fonction du cahier des charges fourni. 
+A partir d'un front end fourni, coder une API back-end en fonction du cahier des charges fourni.
 
-## Technologies utilisées :
+With a front-end, code an API to store informations. The data base should use MongoDB. Secure the API.
+
+## What is used for this project :
 Node-JS (nodemon)
 Express 4.16
 Mongo-db : data base
