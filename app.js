@@ -20,7 +20,7 @@ const app = express();
 // The .env file is not publish on gitHub
 const testEnvFile = dotenv;
 if (testEnvFile.error) {
-  throw new Error('.env file is missing in this project !');
+  throw new Error('.env file is missing in this project ! Contact jmjbup@gmail.com to get this file');
 }
 const DB_CONNECT_STRING = process.env.DB_URL;
 
