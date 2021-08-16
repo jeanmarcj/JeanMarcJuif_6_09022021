@@ -32,10 +32,13 @@ npm start (lance NG Start)
 nodemon server
 
 ### TODO:
-Option :
+
+TODO :
 password-validator npm package
 ------------------------------
 Obligé l'utilisateur à saisir un mot de pass fort (restrictions)
 
-'use strict';
+Like - Dislikes
+---------------
+Lorque l'utilisateur click sur like ou dislike, l'invalidation et la validation doit se faire en 1 clic.
 
